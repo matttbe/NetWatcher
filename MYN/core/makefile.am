@@ -44,15 +44,19 @@ EXTRA_DIST=@top_builddir@/utillib/utillib.h \
 				@top_builddir@/segmentlib/segmentlib.h \
 				@top_builddir@/structlib/structlib.h
 
-bin_PROGRAMS=netwatcherd control dispatch collector netwatcher wait
+bin_PROGRAMS=netwatcherd netwatcher
+
+libexec_PROGRAMS = control dispatch collector wait
 
 netwatcherd_SOURCES=core.c
+netwatcherd_CFLAGS=-DNETWATCHER_MODULE_DIR=\""$(libexecdir)"\"
 
 control_SOURCES=control.c
 control_LDADD=libcontrollib.a libsharedmemorylib.a libutillib.a -lpcap
 
 dispatch_SOURCES=dispatch.c command.h core_type.h
 dispatch_LDADD=libstructlib.a libcapturefilterlib.a libcollectorlib.a libsharedmemorylib.a libsegmentlib.a libutillib.a -lm -lpcap
+dispatch_CFLAGS=-DNETWATCHER_MODULE_DIR=\""$(libexecdir)"\"
 
 collector_SOURCES=collector.c command.h
 collector_LDADD=libcollectorlib.a -lreadline

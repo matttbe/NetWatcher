@@ -920,7 +920,7 @@ int manage_command(mymemory *  mem)
                     #ifdef DEV
                     if( execlp("./wait","wait", arg1, arg2, arg3,"0",arg4, (char *)0) < 0)
                     #else
-                    if( execlp("wait","wait", arg1, arg2, arg3,"0",arg4, (char *)0) < 0)
+                    if( execlp(NETWATCHER_MODULE_DIR"/wait","wait", arg1, arg2, arg3,"0",arg4, (char *)0) < 0)
                     #endif
                     {
                         perror("(dispatch) manage_command,failed to execlp wait");
@@ -933,7 +933,7 @@ int manage_command(mymemory *  mem)
                     #ifdef DEV
                     if( execlp("./wait","wait", arg1, arg2, arg3,"1",arg4, (char *)0) < 0)
                     #else
-                    if( execlp("wait","wait", arg1, arg2, arg3,"1",arg4, (char *)0) < 0)
+                    if( execlp(NETWATCHER_MODULE_DIR"/wait","wait", arg1, arg2, arg3,"1",arg4, (char *)0) < 0)
                     #endif
                     {
                         perror("(dispatch) manage_command,failed to execlp wait");

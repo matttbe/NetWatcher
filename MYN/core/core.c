@@ -190,7 +190,7 @@ int main(int argc, char *argv[])
         #ifdef DEV
         if( execlp("./dispatch","dispatch", arg1, arg2, arg3, (char *)0) < 0)
         #else
-        if( execlp("dispatch","dispatch", arg1, arg2, arg3, (char *)0) < 0)
+        if( execlp(NETWATCHER_MODULE_DIR"/dispatch","dispatch", arg1, arg2, arg3, (char *)0) < 0)
         #endif
         {
             perror("(CORE main) failed to execlp dispatch");
@@ -219,10 +219,10 @@ int main(int argc, char *argv[])
         #ifdef DEV
         if( execlp("./collector","collector",arg1, arg2, arg3 , (char *)0) < 0)
         #else
-        if( execlp("collector","collector",arg1, arg2, arg3 , (char *)0) < 0)
+        if( execlp(NETWATCHER_MODULE_DIR"/collector","collector",arg1, arg2, arg3 , (char *)0) < 0)
         #endif
         {
-            perror("(CORE main) failed to execlp dispatch");
+            perror("(CORE main) failed to execlp collector");
             kill(0,SIGKILL);
             return EXIT_FAILURE;
         }
@@ -243,10 +243,10 @@ int main(int argc, char *argv[])
     #ifdef DEV
     if( execlp("./control","control", arg1, arg2, arg3, arg4, arg5, (char *)0) < 0)
     #else
-    if( execlp("control","control", arg1, arg2, arg3, arg4, arg5, (char *)0) < 0)
+    if( execlp(NETWATCHER_MODULE_DIR"/control","control", arg1, arg2, arg3, arg4, arg5, (char *)0) < 0)
     #endif
     {
-        perror("(CORE main) failed to execlp dispatch");
+        perror("(CORE main) failed to execlp control");
         kill(0,SIGKILL);
         return EXIT_FAILURE;
     }
