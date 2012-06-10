@@ -1,0 +1,65 @@
+#MAIN makefile.am
+
+AM_CFLAGS = --pedantic -Wall -std=c99
+LIBS = 
+
+#SUBDIRS=capturefilterlib collectorlib controllib delayedlib segmentlib structlib utillib sharedmemorylib
+
+noinst_LIBRARIES              = libcapturefilterlib.a libcollectorlib.a libdelayedlib.a libsharedmemorylib.a libcontrollib.a libsegmentlib.a libstructlib.a libutillib.a
+
+libcapturefilterlib_a_SOURCES = @top_builddir@/capturefilterlib/capturefilterlib.c @top_builddir@/core_type.h @top_builddir@/wait_communication.h
+libcapturefilterlib_a_LIBADD  =
+
+libutillib_a_SOURCES = @top_builddir@/utillib/utillib.c @top_builddir@/core_type.h
+libutillib_a_LIBADD  =
+
+libcollectorlib_a_SOURCES = @top_builddir@/collectorlib/collectorlib.c @top_builddir@/core_type.h
+libcollectorlib_a_LIBADD  =
+
+libdelayedlib_a_SOURCES = @top_builddir@/delayedlib/delayedlib.c @top_builddir@/core_type.h
+libdelayedlib_a_LIBADD  =
+
+libsharedmemorylib_a_SOURCES = @top_builddir@/sharedmemorylib/sharedmemorylib.c @top_builddir@/core_type.h
+libsharedmemorylib_a_LIBADD  =
+
+libcontrollib_a_SOURCES = @top_builddir@/controllib/controllib.c @top_builddir@/core_type.h @top_builddir@/command.h
+libcontrollib_a_LIBADD  = libcollectorlib.a libutillib.a libsharedmemorylib.a
+
+libsegmentlib_a_SOURCES = @top_builddir@/segmentlib/segmentlib.c @top_builddir@/core_type.h
+libsegmentlib_a_LIBADD  = libcapturefilterlib.a
+
+libstructlib_a_SOURCES = @top_builddir@/structlib/structlib.c @top_builddir@/core_type.h
+libstructlib_a_LIBADD  = libsegmentlib.a
+
+#include_HEADERS
+EXTRA_DIST=@top_builddir@/utillib/utillib.h \
+				@top_builddir@/command.h \
+				@top_builddir@/core_type.h \
+				@top_builddir@/wait_communication.h \
+				@top_builddir@/capturefilterlib/capturefilterlib.h \
+				@top_builddir@/collectorlib/collectorlib.h \
+				@top_builddir@/delayedlib/delayedlib.h \
+				@top_builddir@/sharedmemorylib/sharedmemorylib.h \
+				@top_builddir@/controllib/controllib.h \
+				@top_builddir@/segmentlib/segmentlib.h \
+				@top_builddir@/structlib/structlib.h
+
+bin_PROGRAMS=netwatcherd control dispatch collector netwatcher wait
+
+netwatcherd_SOURCES=core.c
+
+control_SOURCES=control.c
+control_LDADD=libcontrollib.a libsharedmemorylib.a libutillib.a -lpcap
+
+dispatch_SOURCES=dispatch.c command.h core_type.h
+dispatch_LDADD=libstructlib.a libcapturefilterlib.a libcollectorlib.a libsharedmemorylib.a libsegmentlib.a libutillib.a -lm -lpcap
+
+collector_SOURCES=collector.c command.h
+collector_LDADD=libcollectorlib.a -lreadline
+
+netwatcher_SOURCES=command.c command.h
+netwatcher_LDADD=libutillib.a -lreadline
+
+wait_SOURCES=wait.c core_type.h wait_communication.h
+wait_LDADD=libdelayedlib.a -lm
+
